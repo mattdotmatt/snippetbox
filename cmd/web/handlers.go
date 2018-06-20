@@ -6,17 +6,18 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"path/filepath"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
+func (app *App) Home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
 
 	files := []string{
-		"./ui/html/base.html",
-		"./ui/html/home.page.html",
+		filepath.Join(app.HTMLDir, "base.html"),
+		filepath.Join(app.HTMLDir, "home.page.html"),
 	}
 
 	ts, err := template.ParseFiles(files...)
@@ -35,7 +36,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello from Snippetbox"))
 }
 
-func ShowSnippet(w http.ResponseWriter, r *http.Request) {
+func (app *App) ShowSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 
 	if err != nil || id < 1 {
@@ -45,6 +46,6 @@ func ShowSnippet(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Display a specific snippet (ID %d)...", id)
 }
 
-func NewSnippet(w http.ResponseWriter, r *http.Request) {
+func (app *App) NewSnippet(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Display the new snippet form"))
 }
