@@ -12,4 +12,4 @@
 *.out
 
 # IDE
-.idea
+.idea.DS_Store
