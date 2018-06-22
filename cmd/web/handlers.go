@@ -20,10 +20,21 @@ func (app *App) ShowSnippet(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil || id < 1 {
 		http.NotFound(w, r)
-		http.ServeFile(w, r, "base.html")
 		return
 	}
-	fmt.Fprintf(w, "Display a specific snippet (ID %d)...", id)
+
+	snippet, err := app.Database.GetSnippet(id)
+	if err!=nil{
+		app.ServerError(w, err)
+		return
+	}
+
+	if snippet == nil{
+		app.NotFound(w)
+		return
+	}
+
+	fmt.Fprint(w, snippet)
 }
 
 func (app *App) NewSnippet(w http.ResponseWriter, r *http.Request) {

@@ -3,6 +3,8 @@ package main
 import ( "log"
 	"net/http"
 	"flag"
+
+	"snippetbox.org/pkg/models"
 )
 
 func main() {
@@ -13,6 +15,7 @@ func main() {
 	flag.Parse()
 
 	app := &App{
+		Database: &models.Database{},
 		HTMLDir: *htmlDir,
 		StaticDir: *staticDir,
 	}
